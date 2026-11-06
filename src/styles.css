@@ -532,6 +532,25 @@ a {
   font-weight: 500;
 }
 
+.footer-wordmark,
+.footer-home-link {
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: color 180ms ease, text-decoration-color 180ms ease, text-shadow 180ms ease;
+}
+
+.footer-wordmark:hover,
+.footer-wordmark:focus-visible,
+.footer-home-link:hover,
+.footer-home-link:focus-visible {
+  color: var(--praavi-ivory);
+  text-decoration-color: var(--praavi-rich-gold);
+  text-shadow: 0 0 14px color-mix(in oklab, var(--praavi-gold) 50%, transparent);
+}
+
 .footer-note {
   color: var(--praavi-muted);
   font-size: 10px;
@@ -544,11 +563,15 @@ a {
   margin-top: 4px;
   color: var(--praavi-gold);
   font-size: 10px;
-  transition: color 160ms ease;
 }
 
-.footer-home-link:hover {
-  color: var(--praavi-rich-gold);
+.footer-home-link svg {
+  transition: transform 180ms ease;
+}
+
+.footer-home-link:hover svg,
+.footer-home-link:focus-visible svg {
+  transform: translate(2px, -2px);
 }
 
 @keyframes diya-reveal {
