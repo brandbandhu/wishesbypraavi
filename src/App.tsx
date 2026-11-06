@@ -117,7 +117,7 @@ export default function App() {
 
           <div className="welcome-signoff welcome-reveal welcome-reveal-6 mt-8">
             <span>With love &amp; warm wishes</span>
-            <strong>TEAM PRAAVI</strong>
+            <strong>TEAM PRAAVI CONSULTANTS</strong>
           </div>
 
           <img

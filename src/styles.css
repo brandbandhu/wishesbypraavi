@@ -146,38 +146,6 @@ a {
   pointer-events: none;
 }
 
-.fireworks-replay {
-  position: fixed;
-  z-index: 50;
-  right: max(20px, env(safe-area-inset-right));
-  bottom: max(20px, env(safe-area-inset-bottom));
-  display: grid;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  border: 1px solid color-mix(in oklab, var(--praavi-gold) 35%, transparent);
-  border-radius: 50%;
-  background: color-mix(in oklab, var(--praavi-black) 88%, transparent);
-  color: var(--praavi-gold);
-  cursor: pointer;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
-}
-
-.fireworks-replay:hover:not(:disabled) {
-  border-color: var(--praavi-rich-gold);
-  box-shadow: 0 0 20px color-mix(in oklab, var(--praavi-gold) 15%, transparent);
-}
-
-.fireworks-replay:focus-visible {
-  outline: 2px solid var(--praavi-rich-gold);
-  outline-offset: 4px;
-}
-
-.fireworks-replay:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
 .greeting-section > .mx-auto {
   position: relative;
   z-index: 10;

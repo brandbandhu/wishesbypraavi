@@ -24,4 +24,4 @@ npm run preview
 
 Deploy the `dist/` directory to a static web host. The app uses standard Vite configuration, with React and Tailwind CSS plugins.
 
-Fireworks play on every visit and loop until the visitor scrolls down. They resume on returning to the top, pause when the tab is hidden, and respect reduced-motion preferences. The sparkle button allows manual replay.
+Fireworks play on every visit and loop until the visitor scrolls down. They resume on returning to the top, pause when the tab is hidden, and respect reduced-motion preferences.

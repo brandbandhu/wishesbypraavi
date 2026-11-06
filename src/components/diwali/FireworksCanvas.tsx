@@ -1,13 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { Sparkles } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 import { CinematicFireworks } from "./cinematic-fireworks";
 
 export function FireworksCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const replayRef = useRef<(() => void) | null>(null);
-  const [controls, setControls] = useState<{ host: HTMLElement; reduced: boolean } | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -27,17 +23,6 @@ export function FireworksCanvas() {
         autoplaying = false;
       }
     };
-    setControls({ host: document.body, reduced: motion.matches });
-    replayRef.current = () => {
-      if (!motion.matches && !document.hidden) {
-        show.play(inView);
-        autoplaying = inView;
-      }
-    };
-    const updateMotion = () => {
-      setControls({ host: document.body, reduced: motion.matches });
-      syncPlayback();
-    };
     const observer = new ResizeObserver(() => show.resize());
     observer.observe(canvas);
     const updateScroll = () => {
@@ -47,39 +32,18 @@ export function FireworksCanvas() {
       syncPlayback();
     };
     window.addEventListener("scroll", updateScroll, { passive: true });
-    motion.addEventListener("change", updateMotion);
+    motion.addEventListener("change", syncPlayback);
     document.addEventListener("visibilitychange", syncPlayback);
     syncPlayback();
 
     return () => {
-      replayRef.current = null;
       observer.disconnect();
       window.removeEventListener("scroll", updateScroll);
-      motion.removeEventListener("change", updateMotion);
+      motion.removeEventListener("change", syncPlayback);
       document.removeEventListener("visibilitychange", syncPlayback);
       show.dispose();
     };
   }, []);
 
-  return (
-    <>
-      <canvas ref={canvasRef} className="fireworks-canvas" aria-hidden="true" />
-      {controls &&
-        createPortal(
-          <button
-            type="button"
-            className="fireworks-replay"
-            onClick={() => replayRef.current?.()}
-            disabled={controls.reduced}
-            aria-label={
-              controls.reduced ? "Fireworks paused for reduced motion" : "Replay fireworks"
-            }
-            title={controls.reduced ? "Fireworks paused for reduced motion" : "Replay fireworks"}
-          >
-            <Sparkles size={19} strokeWidth={1.5} aria-hidden="true" />
-          </button>,
-          controls.host,
-        )}
-    </>
-  );
+  return <canvas ref={canvasRef} className="fireworks-canvas" aria-hidden="true" />;
 }

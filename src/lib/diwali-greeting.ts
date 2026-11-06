@@ -254,7 +254,7 @@ export async function renderGreetingCard(canvas: HTMLCanvasElement, name: string
   context.fillText("With warm regards", 540, 1101);
   context.fillStyle = palette.richGold || "#f4c76a";
   context.font = `500 28px ${serif}`;
-  context.fillText("Team Praavi Consultants", 540, 1138);
+  context.fillText("TEAM PRAAVI CONSULTANTS", 540, 1138);
 
   context.strokeStyle = palette.gold || "#d6b46a";
   context.globalAlpha = 0.34;
