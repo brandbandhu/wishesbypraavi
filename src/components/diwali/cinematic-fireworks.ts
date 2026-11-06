@@ -259,7 +259,9 @@ export class CinematicFireworks {
   private visibility(x: number, y: number) {
     const nx = (x / this.width - 0.5) / 0.29;
     const ny = (y / this.height - 0.48) / 0.34;
-    return 0.2 + 0.8 * Math.min(1, (nx * nx + ny * ny) * 0.65);
+    // Let the lower greeting and signoff stay free of falling launch debris.
+    const skyFade = 1 - Math.min(1, Math.max(0, (y / this.height - 0.4) / 0.2));
+    return (0.2 + 0.8 * Math.min(1, (nx * nx + ny * ny) * 0.65)) * skyFade;
   }
 
   private render = (time: number) => {
@@ -383,18 +385,20 @@ export class CinematicFireworks {
         p.glitter || remaining < 0.5 ? 0.55 + 0.45 * Math.sin(p.age * 29 + p.phase) ** 2 : 1;
       const alpha =
         Math.pow(remaining, 0.65) * ignition * twinkle * fade * this.visibility(p.x, p.y);
-      ctx.globalAlpha = alpha * 0.5;
-      ctx.strokeStyle = COLORS[p.color]!;
-      ctx.lineWidth = p.glitter ? 0.55 : 0.85;
-      ctx.beginPath();
-      const length = p.glitter ? Math.min(3, p.count) : p.count;
-      for (let j = 0; j < length; j++) {
-        const at = ((p.cursor - length + j + HISTORY) % HISTORY) * 2;
-        if (j === 0) ctx.moveTo(p.history[at]!, p.history[at + 1]!);
-        else ctx.lineTo(p.history[at]!, p.history[at + 1]!);
+      // Embers are pinpoints; connecting them produces stray angular scratches.
+      if (!p.glitter && p.count > 1) {
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.strokeStyle = COLORS[p.color]!;
+        ctx.lineWidth = 0.85;
+        ctx.beginPath();
+        for (let j = 0; j < p.count; j++) {
+          const at = ((p.cursor - p.count + j + HISTORY) % HISTORY) * 2;
+          if (j === 0) ctx.moveTo(p.history[at]!, p.history[at + 1]!);
+          else ctx.lineTo(p.history[at]!, p.history[at + 1]!);
+        }
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
       }
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
       ctx.globalAlpha = alpha;
       const size = p.radius * (0.6 + remaining * 0.4);
       ctx.drawImage(this.sparks[p.color]!, p.x - size, p.y - size, size * 2, size * 2);
