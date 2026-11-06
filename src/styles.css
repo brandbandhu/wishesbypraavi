@@ -438,7 +438,8 @@ a {
 .download-button:focus-visible,
 .another-button:focus-visible,
 .welcome-scroll:focus-visible,
-.footer-home-link:focus-visible {
+.footer-home-link:focus-visible,
+.footer-wordmark:focus-visible {
   outline: 2px solid var(--praavi-rich-gold);
   outline-offset: 4px;
 }
@@ -529,13 +530,6 @@ a {
   font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
   font-size: 16px;
   font-weight: 500;
-}
-
-.footer-wordmark span {
-  margin-left: 4px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 8px;
-  letter-spacing: 0.08em;
 }
 
 .footer-note {

@@ -244,9 +244,14 @@ export default function App() {
       </section>
 
       <footer className="greeting-footer flex flex-col items-center gap-3 px-6 py-9 text-center">
-        <span className="footer-wordmark">
-          PRAAVI <span>CONSULTANTS</span>
-        </span>
+        <a
+          className="footer-wordmark"
+          href="https://praaviconsultants.in/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          PRAAVI CONSULTANTS
+        </a>
         <span className="footer-note">
           Digital Marketing · Web Development · Creative Solutions
         </span>
