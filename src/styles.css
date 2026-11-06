@@ -428,12 +428,13 @@ a {
 
 .name-input {
   height: 56px;
+  min-height: 56px;
   border: 1px solid var(--input);
   border-radius: 2px;
   background: color-mix(in oklab, var(--praavi-charcoal) 66%, transparent);
   padding: 0 17px;
   color: var(--praavi-ivory);
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
@@ -570,6 +571,10 @@ a {
 
 .footer-wordmark,
 .footer-home-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   text-decoration-line: underline;
   text-decoration-color: transparent;
@@ -642,11 +647,16 @@ a {
 }
 
 @media (max-width: 560px) {
-  .welcome-scene { min-height: max(720px, 100svh); }
-  .welcome-content { min-height: 560px; }
-  .welcome-title { font-size: clamp(64px, 13vw, 82px); }
+  .welcome-scene { min-height: 100svh; padding: 88px 20px 48px; }
+  .welcome-content { min-height: 0; }
+  .welcome-title { font-size: clamp(46px, 13.5vw, 72px); white-space: nowrap; }
   .welcome-prelude { font-size: 21px; }
-  .welcome-message { max-width: 330px; font-size: 13px; }
+  .welcome-message { max-width: 340px; font-size: 14px; line-height: 1.8; }
+  .welcome-eyebrow { margin-top: 32px; }
+  .welcome-signoff { margin-top: 24px; }
+  .welcome-scroll { margin-top: 28px; font-size: 12px; }
+  .diwali-music-control { top: max(16px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); width: 44px; padding: 0; }
+  .diwali-music-control span { display: none; }
   .welcome-diya { top: 53%; width: min(92vw, 390px); }
   .welcome-scene::after { margin: 9px; }
   .welcome-eyebrow,
@@ -654,7 +664,7 @@ a {
   .greeting-section { padding-top: 82px; padding-bottom: 88px; }
   .section-description { font-size: 13px; }
   .form-control-row { flex-direction: column; }
-  .name-input { width: 100%; }
+  .name-input { width: 100%; flex: none; }
   .create-button { width: 100%; }
   .preview-title { font-size: 28px; }
   .greeting-card-frame { width: min(100%, 460px); }
