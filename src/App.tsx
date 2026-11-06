@@ -81,6 +81,7 @@ export default function App() {
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
       <section
+        id="welcome"
         aria-labelledby="welcome-title"
         className="welcome-scene relative isolate flex min-h-[min(880px,100svh)] min-h-screen flex-col items-center justify-center px-6 py-20 text-center"
       >
@@ -257,7 +258,7 @@ export default function App() {
         </span>
         <a
           className="footer-home-link"
-          href="#welcome-title"
+          href="#welcome"
           aria-label="Back to the Diwali greeting"
         >
           Back to the light <ArrowUpRight aria-hidden="true" size={12} />
