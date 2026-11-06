@@ -5,6 +5,7 @@ import diyaImageUrl from "@/assets/praavi-diya.png";
 
 import { Button } from "@/components/ui/button";
 import { FireworksCanvas } from "@/components/diwali/FireworksCanvas";
+import { DiwaliMusic } from "@/components/diwali/DiwaliMusic";
 import {
   createGreetingFilename,
   renderGreetingCard,
@@ -80,6 +81,7 @@ export default function App() {
 
   return (
     <main className="min-h-screen overflow-hidden bg-background text-foreground">
+      <DiwaliMusic />
       <section
         id="welcome"
         aria-labelledby="welcome-title"
@@ -256,11 +258,7 @@ export default function App() {
         <span className="footer-note">
           Digital Marketing · Web Development · Creative Solutions
         </span>
-        <a
-          className="footer-home-link"
-          href="#welcome"
-          aria-label="Back to the Diwali greeting"
-        >
+        <a className="footer-home-link" href="#welcome" aria-label="Back to the Diwali greeting">
           Back to the light <ArrowUpRight aria-hidden="true" size={12} />
         </a>
       </footer>

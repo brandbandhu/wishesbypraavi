@@ -146,6 +146,42 @@ a {
   pointer-events: none;
 }
 
+.diwali-music-control {
+  position: fixed;
+  z-index: 50;
+  top: max(24px, env(safe-area-inset-top));
+  right: max(24px, env(safe-area-inset-right));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid color-mix(in oklab, var(--praavi-gold) 30%, transparent);
+  border-radius: 24px;
+  background: color-mix(in oklab, var(--praavi-black) 92%, transparent);
+  color: var(--praavi-gold);
+  font-size: 10px;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.diwali-music-control:hover {
+  color: var(--praavi-ivory);
+  border-color: var(--praavi-rich-gold);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--praavi-gold) 18%, transparent);
+}
+
+.diwali-music-control:focus-visible {
+  outline: 2px solid var(--praavi-rich-gold);
+  outline-offset: 4px;
+}
+
+.diwali-music-control:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 .greeting-section > .mx-auto {
   position: relative;
   z-index: 10;

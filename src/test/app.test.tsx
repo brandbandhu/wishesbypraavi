@@ -4,6 +4,7 @@ import App from "@/App";
 import { renderGreetingCard } from "@/lib/diwali-greeting";
 
 vi.mock("@/components/diwali/FireworksCanvas", () => ({ FireworksCanvas: () => null }));
+vi.mock("@/components/diwali/DiwaliMusic", () => ({ DiwaliMusic: () => null }));
 vi.mock("@/lib/diwali-greeting", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/lib/diwali-greeting")>()),
   renderGreetingCard: vi.fn().mockResolvedValue(undefined),
