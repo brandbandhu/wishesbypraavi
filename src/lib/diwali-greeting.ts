@@ -29,7 +29,7 @@ export function createGreetingFilename(name: string): string {
   return `Praavi-Diwali-Wishes-${safeName || "Friend"}.png`;
 }
 
-function readPalette(): Record<string, string> {
+function readPalette() {
   const styles = getComputedStyle(document.documentElement);
   return {
     black: styles.getPropertyValue("--praavi-black").trim(),

@@ -71,6 +71,7 @@ export class CinematicFireworks {
   private lastTime = 0;
   private cueIndex = 0;
   private running = false;
+  private looping = false;
   private disposed = false;
   private cues: Cue[] = [];
   private rockets: Rocket[] = [];
@@ -79,7 +80,7 @@ export class CinematicFireworks {
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
-    private readonly onStart: () => void,
+    private readonly onStart: () => void = () => {},
   ) {
     this.ctx = canvas.getContext("2d", { alpha: true });
     this.available = Boolean(this.ctx);
@@ -128,9 +129,10 @@ export class CinematicFireworks {
     }
   }
 
-  play() {
+  play(loop = false) {
     if (this.disposed || !this.available) return;
     this.stop();
+    this.looping = loop;
     // Composed left/right pairs, with small variations on replay.
     const cues: Cue[] = [
       { at: 0.04, x: 0.17, y: 0.23, size: 1, color: 0, style: "chrysanthemum" },
@@ -165,6 +167,7 @@ export class CinematicFireworks {
     cancelAnimationFrame(this.frame);
     this.frame = 0;
     this.running = false;
+    this.looping = false;
     this.startTime = null;
     this.lastTime = 0;
     this.cueIndex = 0;
@@ -268,7 +271,8 @@ export class CinematicFireworks {
     }
     const elapsed = (time - this.startTime) / 1000;
     if (elapsed >= DURATION) {
-      this.stop();
+      if (this.looping) this.play(true);
+      else this.stop();
       return;
     }
     // Time-based drag/acceleration prevents refresh-rate-dependent trajectories.

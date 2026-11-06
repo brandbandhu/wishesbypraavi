@@ -4,10 +4,6 @@ import { Sparkles } from "lucide-react";
 
 import { CinematicFireworks } from "./cinematic-fireworks";
 
-const SESSION_KEY = "praavi:diwali-fireworks:played";
-// Remember playback during navigation even when storage is unavailable.
-let playedInMemory = false;
-
 export function FireworksCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const replayRef = useRef<(() => void) | null>(null);
@@ -17,45 +13,50 @@ export function FireworksCanvas() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const show = new CinematicFireworks(canvas, () => {
-      // Mark actual playback, rather than effect setup, to support Strict Mode.
-      playedInMemory = true;
-      try {
-        sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        // Storage restrictions must not break the greeting.
-      }
-    });
+    const show = new CinematicFireworks(canvas);
     if (!show.available) return;
 
-    let played = playedInMemory;
-    try {
-      played ||= sessionStorage.getItem(SESSION_KEY) === "1";
-    } catch {
-      // Use the in-memory fallback above.
-    }
+    let inView = window.scrollY < 32;
+    let autoplaying = false;
+    const syncPlayback = () => {
+      if (!motion.matches && !document.hidden && inView) {
+        if (!autoplaying) show.play(true);
+        autoplaying = true;
+      } else {
+        show.stop();
+        autoplaying = false;
+      }
+    };
     setControls({ host: document.body, reduced: motion.matches });
     replayRef.current = () => {
-      if (!motion.matches) show.play();
+      if (!motion.matches && !document.hidden) {
+        show.play(inView);
+        autoplaying = inView;
+      }
     };
     const updateMotion = () => {
       setControls({ host: document.body, reduced: motion.matches });
-      if (motion.matches) show.stop();
-    };
-    const hide = () => {
-      if (document.hidden) show.stop();
+      syncPlayback();
     };
     const observer = new ResizeObserver(() => show.resize());
     observer.observe(canvas);
+    const updateScroll = () => {
+      const atTop = window.scrollY < 32;
+      if (atTop === inView) return;
+      inView = atTop;
+      syncPlayback();
+    };
+    window.addEventListener("scroll", updateScroll, { passive: true });
     motion.addEventListener("change", updateMotion);
-    document.addEventListener("visibilitychange", hide);
-    if (!motion.matches && !played && !document.hidden) show.play();
+    document.addEventListener("visibilitychange", syncPlayback);
+    syncPlayback();
 
     return () => {
       replayRef.current = null;
       observer.disconnect();
+      window.removeEventListener("scroll", updateScroll);
       motion.removeEventListener("change", updateMotion);
-      document.removeEventListener("visibilitychange", hide);
+      document.removeEventListener("visibilitychange", syncPlayback);
       show.dispose();
     };
   }, []);

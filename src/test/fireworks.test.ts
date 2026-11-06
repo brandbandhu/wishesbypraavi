@@ -63,6 +63,24 @@ describe("cinematic fireworks lifecycle", () => {
     show.dispose();
   });
 
+  it("keeps one loop running beyond eight seconds until explicitly stopped", () => {
+    const started = vi.fn();
+    const show = new CinematicFireworks(canvas, started);
+    show.play(true);
+    tick(0);
+    tick(8000);
+    expect(frames.size).toBe(1);
+    tick(8016);
+    expect(started).toHaveBeenCalledTimes(2);
+    tick(16016);
+    tick(16032);
+    expect(started).toHaveBeenCalledTimes(3);
+    expect(frames.size).toBe(1);
+    show.stop();
+    expect(frames.size).toBe(0);
+    show.dispose();
+  });
+
   it("restarts one animation loop on rapid replay and cancels it on disposal", () => {
     const started = vi.fn();
     const show = new CinematicFireworks(canvas, started);
