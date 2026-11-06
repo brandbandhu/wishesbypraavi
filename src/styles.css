@@ -1,0 +1,652 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-praavi-gold: var(--praavi-gold);
+  --color-praavi-rich-gold: var(--praavi-rich-gold);
+  --color-praavi-amber: var(--praavi-amber);
+  --color-praavi-ivory: var(--praavi-ivory);
+  --color-praavi-muted: var(--praavi-muted);
+}
+
+:root {
+  color-scheme: dark;
+  --radius: 0.375rem;
+  --praavi-black: oklch(0.08 0 0);
+  --praavi-charcoal: oklch(0.14 0.012 60);
+  --praavi-gold: oklch(0.77 0.105 83);
+  --praavi-rich-gold: oklch(0.83 0.13 84);
+  --praavi-amber: oklch(0.75 0.16 62);
+  --praavi-rose: oklch(0.72 0.12 20);
+  --praavi-ivory: oklch(0.97 0.03 82);
+  --praavi-muted: oklch(0.74 0.045 80);
+
+  --background: var(--praavi-black);
+  --foreground: var(--praavi-ivory);
+  --card: var(--praavi-charcoal);
+  --card-foreground: var(--praavi-ivory);
+  --popover: var(--praavi-charcoal);
+  --popover-foreground: var(--praavi-ivory);
+  --primary: var(--praavi-gold);
+  --primary-foreground: var(--praavi-black);
+  --secondary: var(--praavi-charcoal);
+  --secondary-foreground: var(--praavi-ivory);
+  --muted: var(--praavi-charcoal);
+  --muted-foreground: var(--praavi-muted);
+  --accent: oklch(0.22 0.025 70);
+  --accent-foreground: var(--praavi-ivory);
+  --destructive: oklch(0.65 0.2 28);
+  --destructive-foreground: var(--praavi-ivory);
+  --border: oklch(0.36 0.045 78 / 45%);
+  --input: oklch(0.42 0.04 78 / 65%);
+  --ring: var(--praavi-gold);
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: "DM Sans", "Noto Serif Devanagari", sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--praavi-gold) 35%, transparent);
+  color: var(--praavi-ivory);
+}
+
+.welcome-scene {
+  /* Share the fireworks layer with the whole page, beneath its content. */
+  isolation: auto;
+  min-height: max(760px, 100svh);
+  background:
+    radial-gradient(ellipse at 50% 58%, color-mix(in oklab, var(--praavi-amber) 10%, transparent), transparent 38%),
+    radial-gradient(ellipse at 50% 48%, color-mix(in oklab, var(--praavi-gold) 6%, transparent), transparent 62%),
+    var(--praavi-black);
+}
+
+.welcome-scene::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border: 1px solid color-mix(in oklab, var(--praavi-gold) 13%, transparent);
+  margin: 15px;
+  pointer-events: none;
+  content: "";
+}
+
+.welcome-halo {
+  position: absolute;
+  z-index: 1;
+  top: 43%;
+  left: 50%;
+  width: min(52vw, 650px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--praavi-amber) 8%, transparent), transparent 69%);
+  filter: blur(18px);
+  transform: translate(-50%, -50%);
+  animation: halo-breathe 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.fireworks-canvas {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fireworks-replay {
+  position: fixed;
+  z-index: 50;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid color-mix(in oklab, var(--praavi-gold) 35%, transparent);
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--praavi-black) 88%, transparent);
+  color: var(--praavi-gold);
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.fireworks-replay:hover:not(:disabled) {
+  border-color: var(--praavi-rich-gold);
+  box-shadow: 0 0 20px color-mix(in oklab, var(--praavi-gold) 15%, transparent);
+}
+
+.fireworks-replay:focus-visible {
+  outline: 2px solid var(--praavi-rich-gold);
+  outline-offset: 4px;
+}
+
+.fireworks-replay:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.greeting-section > .mx-auto {
+  position: relative;
+  z-index: 10;
+}
+
+.greeting-footer {
+  position: relative;
+  z-index: 10;
+}
+
+.welcome-content {
+  min-height: 620px;
+  justify-content: center;
+}
+
+.brand-wordmark {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: var(--praavi-rich-gold);
+}
+
+.brand-logo {
+  display: block;
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-wordmark-name {
+  font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.brand-wordmark-rule {
+  width: 38px;
+  height: 1px;
+  margin-top: 7px;
+  background: var(--praavi-gold);
+  opacity: 0.7;
+}
+
+.brand-wordmark-descriptor {
+  margin-top: 5px;
+  font-size: 9px;
+  font-weight: 400;
+}
+
+.welcome-eyebrow,
+.section-kicker {
+  color: var(--praavi-gold);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.welcome-prelude {
+  color: var(--praavi-muted);
+  font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.welcome-title,
+.section-title,
+.preview-title {
+  color: var(--praavi-ivory);
+  font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
+  font-weight: 400;
+}
+
+.welcome-title {
+  background: linear-gradient(105deg, var(--praavi-gold) 16%, var(--praavi-ivory) 47%, var(--praavi-rich-gold) 75%);
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(72px, 9.2vw, 118px);
+  line-height: 0.96;
+  animation: text-reveal 1.1s cubic-bezier(0.2, 0.75, 0.25, 1) both, title-shimmer 8s 3s ease-in-out infinite;
+  background-size: 200% 100%;
+  background-position: 100% center;
+}
+
+.welcome-message {
+  color: var(--praavi-muted);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.9;
+}
+
+.welcome-signoff {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--praavi-muted);
+  font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+.welcome-signoff strong {
+  color: var(--praavi-gold);
+  font-family: "DM Sans", sans-serif;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+
+.welcome-diya {
+  position: absolute;
+  z-index: -1;
+  top: 52%;
+  left: 50%;
+  width: clamp(260px, 39vw, 450px);
+  height: auto;
+  opacity: 0.1;
+  filter: saturate(0.85) drop-shadow(0 0 38px color-mix(in oklab, var(--praavi-amber) 27%, transparent));
+  transform: translate(-50%, -50%);
+  animation: diya-reveal 0.85s 2s ease-out both;
+  pointer-events: none;
+}
+
+.welcome-scroll {
+  position: relative;
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 15px;
+  color: var(--praavi-rich-gold);
+  font-size: 11px;
+  transition: color 180ms ease, gap 180ms ease;
+}
+
+.welcome-scroll::after {
+  position: absolute;
+  right: 0;
+  bottom: 7px;
+  left: 0;
+  height: 1px;
+  background: color-mix(in oklab, var(--praavi-gold) 48%, transparent);
+  content: "";
+  transform: scaleX(0.44);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+
+.welcome-scroll:hover {
+  gap: 19px;
+  color: var(--praavi-ivory);
+}
+
+.welcome-scroll:hover::after {
+  transform: scaleX(1);
+}
+
+.welcome-index,
+.welcome-side-note {
+  z-index: 3;
+  color: color-mix(in oklab, var(--praavi-muted) 75%, transparent);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+}
+
+.welcome-index > span:first-child {
+  color: var(--praavi-gold);
+}
+
+.welcome-index-rule {
+  width: 33px;
+  height: 1px;
+  background: color-mix(in oklab, var(--praavi-gold) 50%, transparent);
+}
+
+.welcome-reveal {
+  opacity: 0;
+  animation: reveal-up 0.85s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+.welcome-reveal-1 { animation-delay: 0.12s; }
+.welcome-reveal-2 { animation-delay: 0.55s; }
+.welcome-reveal-3 { animation-delay: 1.05s; }
+.welcome-reveal-4 { animation-delay: 1.5s; }
+.welcome-reveal-5 { animation-delay: 2s; }
+.welcome-reveal-6 { animation-delay: 2.6s; }
+
+.greeting-section {
+  position: relative;
+  min-height: 560px;
+  background:
+    radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--praavi-gold) 5%, transparent), transparent 47%),
+    var(--background);
+}
+
+.section-ornament {
+  width: 40px;
+  height: 1px;
+  background: var(--praavi-gold);
+  opacity: 0.55;
+}
+
+.section-ornament-top {
+  position: absolute;
+  top: 0;
+  left: calc(50% - 20px);
+}
+
+.section-title {
+  font-size: clamp(42px, 6vw, 62px);
+  line-height: 1.05;
+}
+
+.section-description {
+  color: var(--praavi-muted);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.greeting-workspace {
+  width: 100%;
+  max-width: 830px;
+}
+
+.name-form {
+  width: 100%;
+  max-width: 610px;
+}
+
+.form-label {
+  color: var(--praavi-ivory);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.form-control-row {
+  display: flex;
+  gap: 10px;
+}
+
+.name-input {
+  height: 56px;
+  border: 1px solid var(--input);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--praavi-charcoal) 66%, transparent);
+  padding: 0 17px;
+  color: var(--praavi-ivory);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.name-input::placeholder {
+  color: color-mix(in oklab, var(--praavi-muted) 64%, transparent);
+}
+
+.name-input:focus-visible {
+  border-color: var(--praavi-gold);
+  background: var(--praavi-charcoal);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--praavi-gold) 13%, transparent);
+}
+
+.name-input[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+
+.create-button,
+.download-button {
+  border: 1px solid color-mix(in oklab, var(--praavi-rich-gold) 80%, transparent);
+  border-radius: 2px;
+  background: var(--praavi-gold);
+  color: var(--praavi-black);
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.create-button:hover,
+.download-button:hover:not(:disabled) {
+  background: var(--praavi-rich-gold);
+  box-shadow: 0 0 27px color-mix(in oklab, var(--praavi-gold) 24%, transparent);
+  transform: translateY(-1px);
+}
+
+.create-button:focus-visible,
+.download-button:focus-visible,
+.another-button:focus-visible,
+.welcome-scroll:focus-visible,
+.footer-home-link:focus-visible {
+  outline: 2px solid var(--praavi-rich-gold);
+  outline-offset: 4px;
+}
+
+.form-error {
+  color: var(--destructive-foreground);
+  font-size: 12px;
+}
+
+.preview-area {
+  animation: reveal-up 0.65s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.preview-heading {
+  max-width: 540px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.preview-title {
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.preview-dimensions {
+  padding-bottom: 4px;
+  color: var(--praavi-muted);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.greeting-card-frame {
+  position: relative;
+  width: min(100%, 540px);
+  aspect-ratio: 4 / 5;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--praavi-gold) 34%, transparent);
+  background: var(--praavi-black);
+  box-shadow: 0 20px 75px color-mix(in oklab, var(--praavi-amber) 12%, transparent), 0 0 26px color-mix(in oklab, var(--praavi-gold) 7%, transparent);
+  transition: box-shadow 260ms ease;
+}
+
+.greeting-card-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card-loading {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--praavi-black) 45%, transparent);
+}
+
+.preview-loading .greeting-card-frame {
+  box-shadow: 0 0 18px color-mix(in oklab, var(--praavi-gold) 9%, transparent);
+}
+
+.sparkle-burst {
+  animation: sparkle-bloom 1.1s ease-out;
+}
+
+.another-button {
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--praavi-ivory);
+  font-size: 12px;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.another-button:hover {
+  border-color: var(--praavi-gold);
+  background: color-mix(in oklab, var(--praavi-gold) 7%, transparent);
+  color: var(--praavi-rich-gold);
+}
+
+.greeting-footer {
+  border-top: 1px solid color-mix(in oklab, var(--praavi-gold) 15%, transparent);
+  color: var(--praavi-muted);
+}
+
+.footer-wordmark {
+  color: var(--praavi-gold);
+  font-family: "Cormorant Garamond", "Noto Serif Devanagari", Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.footer-wordmark span {
+  margin-left: 4px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+}
+
+.footer-note {
+  color: var(--praavi-muted);
+  font-size: 10px;
+}
+
+.footer-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--praavi-gold);
+  font-size: 10px;
+  transition: color 160ms ease;
+}
+
+.footer-home-link:hover {
+  color: var(--praavi-rich-gold);
+}
+
+@keyframes diya-reveal {
+  from { opacity: 0; }
+  to { opacity: 0.1; }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(13px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes text-reveal {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes title-shimmer {
+  0%, 70%, 100% { background-position: 100% center; }
+  83% { background-position: 0% center; }
+}
+
+@keyframes halo-breathe {
+  from { opacity: 0.55; transform: translate(-50%, -50%) scale(0.94); }
+  to { opacity: 0.95; transform: translate(-50%, -50%) scale(1.07); }
+}
+
+@keyframes sparkle-bloom {
+  0% { box-shadow: 0 0 0 color-mix(in oklab, var(--praavi-gold) 0%, transparent); }
+  36% { box-shadow: 0 0 50px color-mix(in oklab, var(--praavi-gold) 24%, transparent); }
+  100% { box-shadow: 0 20px 75px color-mix(in oklab, var(--praavi-amber) 12%, transparent); }
+}
+
+@media (max-width: 560px) {
+  .welcome-scene { min-height: max(720px, 100svh); }
+  .welcome-content { min-height: 560px; }
+  .welcome-title { font-size: clamp(64px, 13vw, 82px); }
+  .welcome-prelude { font-size: 21px; }
+  .welcome-message { max-width: 330px; font-size: 13px; }
+  .welcome-diya { top: 53%; width: min(92vw, 390px); }
+  .welcome-scene::after { margin: 9px; }
+  .welcome-eyebrow,
+  .section-kicker { font-size: 9px; letter-spacing: 0.13em; }
+  .greeting-section { padding-top: 82px; padding-bottom: 88px; }
+  .section-description { font-size: 13px; }
+  .form-control-row { flex-direction: column; }
+  .name-input { width: 100%; }
+  .create-button { width: 100%; }
+  .preview-title { font-size: 28px; }
+  .greeting-card-frame { width: min(100%, 460px); }
+  .preview-actions { align-items: stretch; flex-direction: column; }
+  .download-button,
+  .another-button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
