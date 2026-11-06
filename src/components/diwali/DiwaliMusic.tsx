@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import musicUrl from "@/assets/deepavali-festival-of-lights.mp3";
 
-const MUTE_KEY = "praavi:diwali-music:muted";
-
 export function DiwaliMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const mutedByUser = useRef(false);
@@ -16,11 +14,8 @@ export function DiwaliMusic() {
     let disposed = false;
     let hasPlayed = false;
     audio.volume = 0.24;
-    try {
-      mutedByUser.current = localStorage.getItem(MUTE_KEY) === "1";
-    } catch {
-      /* Storage is optional. */
-    }
+    // Every fresh visit starts enabled; mute only applies to this visit.
+    mutedByUser.current = false;
 
     const tryPlay = () => {
       if (disposed || document.hidden || mutedByUser.current) return;
@@ -62,11 +57,6 @@ export function DiwaliMusic() {
     const audio = audioRef.current;
     if (!audio) return;
     mutedByUser.current = !audio.paused;
-    try {
-      localStorage.setItem(MUTE_KEY, mutedByUser.current ? "1" : "0");
-    } catch {
-      /* Storage is optional. */
-    }
     if (mutedByUser.current) audio.pause();
     else void audio.play().catch(() => setPlaying(false));
   }

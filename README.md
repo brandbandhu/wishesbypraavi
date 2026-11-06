@@ -26,4 +26,4 @@ Deploy the `dist/` directory to a static web host. The app uses standard Vite co
 
 Fireworks play on every visit and loop until the visitor scrolls down. They resume on returning to the top, pause when the tab is hidden, and respect reduced-motion preferences.
 
-The supplied “Deepavali (Festival Of Lights)” MP3 accompanies the greeting at low volume. Music starts automatically where browser policy permits, otherwise on the first tap/click or Enter/Space. The music control remembers a visitor's mute choice, and playback pauses while the tab is hidden. The track is hosted with the app and needs no external music service.
+The supplied “Deepavali (Festival Of Lights)” MP3 accompanies the greeting at low volume. Music starts enabled on every fresh visit and plays automatically where browser policy permits, otherwise on the first tap/click or Enter/Space. Visitors can turn it off for the current visit using the music control. Playback pauses while the tab is hidden. The track is hosted with the app and needs no external music service.

@@ -63,24 +63,31 @@ describe("Diwali background music", () => {
     expect(play).toHaveBeenCalledTimes(2);
   });
 
-  it("remembers mute, ignores later document clicks, and lets visitors unmute", () => {
+  it("keeps a manual mute during this visit and lets visitors unmute", () => {
     render(<DiwaliMusic />);
     fireEvent.click(screen.getByRole("button", { name: "Mute Diwali music" }));
-    expect(localStorage.getItem("praavi:diwali-music:muted")).toBe("1");
+    expect(paused).toBe(true);
     fireEvent.pointerDown(document.body);
+    hidden = true;
+    fireEvent(document, new Event("visibilitychange"));
+    hidden = false;
+    fireEvent(document, new Event("visibilitychange"));
     expect(play).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: "Play Diwali music" }));
     expect(play).toHaveBeenCalledTimes(2);
-    expect(localStorage.getItem("praavi:diwali-music:muted")).toBe("0");
+    expect(paused).toBe(false);
   });
 
-  it("honors a saved mute preference on the next visit", () => {
+  it("starts enabled on every fresh visit, ignoring an old saved mute preference", () => {
     localStorage.setItem("praavi:diwali-music:muted", "1");
-    render(<DiwaliMusic />);
-    fireEvent.pointerDown(document.body);
-    expect(play).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Play Diwali music" }));
+    const firstVisit = render(<DiwaliMusic />);
     expect(play).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("button", { name: "Mute Diwali music" }));
+    expect(paused).toBe(true);
+    firstVisit.unmount();
+    render(<DiwaliMusic />);
+    expect(play).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole("button", { name: "Mute Diwali music" })).toBeInTheDocument();
   });
 
   it("pauses in a hidden tab, resumes on return, and cleans up on unmount", () => {
